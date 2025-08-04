@@ -3,6 +3,7 @@ import {sequelize} from "../config/database.js";
 import Componente from "./Componente";
 import equipamento  from "./Equipamento.js";
 import Equipamento from "./Equipamento.js";
+import componente from "./Componente";
 
 const Substituicao = sequelize.define("Substituicao", {
     id: {
@@ -25,3 +26,9 @@ const Substituicao = sequelize.define("Substituicao", {
 
 Substituicao.belongsTo(Equipamento, {foreignKey: "equipamentoId"})
 Equipamento.hasMany(Substituicao, {foreignKey: "equipamentoId"})
+
+
+Substituicao.belongsTo(Componente, {as: "componenteAntigo", foreignKey: "componenteAntigoId"})
+Substituicao.belongsTo(Componente, {as:"componenteNovo", foreignKey: "componenteNovoId"})
+
+export default Substituicao;
