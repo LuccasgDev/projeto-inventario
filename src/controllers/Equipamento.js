@@ -52,6 +52,29 @@ export async function atualizarEquipamento(req, res) {
         if(nome !== undefined) equipamento.nome = nome;
         if(tag !== undefined) equipamento.tag = tag;
         if(dataAquisicao !== undefined) equipamento.dataAquisicao = new Date(dataAquisicao)
+        if(departamentoID !== undefined) equipamento.departamentoID = departamentoID;
 
+        await equipamento.save();
+
+        res.status(200).json({message: 'Equipamento atualizado'});
+    }catch (error) {
+        console.error(error);
+        res.status(500).json({error: "Erro ao atualizar os equipamentos"});
+    }
+}
+
+
+export async function deletarEquipamento(req, res) {
+    try{
+        const {id} = req.params;
+        const equipamento = await Equipamento.findByPk(id);
+        if(!equipamento){
+            res.status(404).json({error: "Equipamento nao encontrado"});
+        }
+        await equipamento.destroy();
+        res.status(200).send()
+    }catch (error){
+        console.error(error);
+        res.status(500).json({error: "Erro ao deletar equipamento"});
     }
 }
