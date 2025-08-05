@@ -1,33 +1,31 @@
-import {DataTypes} from "sequelize";
-import Sequelize from "sequelize";
-import Departamento from "./Departamento.js";
-import {sequelize} from "../config/database.js";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../config/database.js';
+import Departamento from './Departamento.js';
 
-const Equipamento = sequelize.define("Equipamento", {
+const Equipamento = sequelize.define('Equipamento', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
-        primaryKey: true,
+        primaryKey: true
     },
     nome: {
         type: DataTypes.STRING,
-        allowNull: false,
+        allowNull: false
     },
     tag: {
-        type: DataTypes.DATE,
-        allowNull: true,
+        type: DataTypes.STRING,
+        unique: true
     },
     dataAquisicao: {
         type: DataTypes.DATE,
-        allowNull: true,
-    },
-},
-{
-    tableName: "equipamentos",
-        timestamps: true
-})
+        allowNull: false
+    }
+}, {
+    tableName: 'equipamentos'
+});
 
-Equipamento.belongsTo(Departamento, {foreignKey: "departamentoId"})
-Departamento.belongsTo(Equipamento, {foreignKey: "departamentoId"})
+// Associações
+Equipamento.belongsTo(Departamento, { foreignKey: 'departamentoId' });
+Departamento.hasMany(Equipamento, { foreignKey: 'departamentoId' });
 
 export default Equipamento;
