@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import { sequelize } from './config/database.js';
 import authRoutes from './routes/auth.js';
-import departamentoRoutes from './routes/departamento.js'; // Importação corrigida
+import departamentoRoutes from './routes/departamentoRoutes.js'; // Importação corrigida
 import authMiddleware from './middlewares/authMiddleware.js';
 
 dotenv.config();

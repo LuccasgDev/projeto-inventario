@@ -1,7 +1,7 @@
 import {DataTypes} from "sequelize";
 import sequelize from "../config/database.js"
 
-const Componente = sequelize.define("Componente", {
+const ComponenteModels = sequelize.define("Componente", {
     id:{
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -26,8 +26,8 @@ const Componente = sequelize.define("Componente", {
     },
 {
 
-    tableName: "Componente",
+    tableName: "ComponenteModels",
         timestamps: true
 })
 
-export default Componente;
+export default ComponenteModels;

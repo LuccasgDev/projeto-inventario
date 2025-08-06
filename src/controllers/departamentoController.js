@@ -1,8 +1,8 @@
-import Departamento from '../models/Departamento.js';
+import DepartamentoModels from '../models/departamentoModels.js';
 
 export async function listarDepartamentos(req, res) {
     try {
-        const departamentos = await Departamento.findAll();
+        const departamentos = await DepartamentoModels.findAll();
         res.json(departamentos);
     } catch (error) {
         console.error(error);
@@ -13,7 +13,7 @@ export async function listarDepartamentos(req, res) {
 export async function criarDepartamento(req, res) {
     try {
         const { nome, descricao } = req.body;
-        const novoDepartamento = await Departamento.create({ nome, descricao });
+        const novoDepartamento = await DepartamentoModels.create({ nome, descricao });
         res.status(201).json(novoDepartamento);
     } catch (error) {
         console.error(error);
@@ -24,10 +24,10 @@ export async function criarDepartamento(req, res) {
 export async function detalharDepartamento(req, res) {
     try {
         const { id } = req.params;
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await DepartamentoModels.findByPk(id);
 
         if (!departamento) {
-            return res.status(404).json({ error: 'Departamento não encontrado' });
+            return res.status(404).json({ error: 'DepartamentoModels não encontrado' });
         }
 
         res.json(departamento);
@@ -42,9 +42,9 @@ export async function atualizarDepartamento(req, res) {
         const { id } = req.params;
         const { nome, descricao } = req.body;
 
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await DepartamentoModels.findByPk(id);
         if (!departamento) {
-            return res.status(404).json({ error: 'Departamento não encontrado' });
+            return res.status(404).json({ error: 'DepartamentoModels não encontrado' });
         }
 
         departamento.nome = nome;
@@ -61,10 +61,10 @@ export async function atualizarDepartamento(req, res) {
 export async function deletarDepartamento(req, res) {
     try {
         const { id } = req.params;
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await DepartamentoModels.findByPk(id);
 
         if (!departamento) {
-            return res.status(404).json({ error: 'Departamento não encontrado' });
+            return res.status(404).json({ error: 'DepartamentoModels não encontrado' });
         }
 
         await departamento.destroy();

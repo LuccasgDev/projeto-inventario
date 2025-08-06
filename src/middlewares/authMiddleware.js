@@ -36,3 +36,10 @@ export default function authMiddleware(req, res, next) {
         return res.status(500).json({error: 'Erro na autenticação'})
     }
 }
+
+export async function adminMiddleware(req, res, next) {
+    if(req.user.nivelAcesso !== "admin") {
+        return res.status(403).json({error: 'Acesso restrito a administradores' })
+    }
+    next()
+}

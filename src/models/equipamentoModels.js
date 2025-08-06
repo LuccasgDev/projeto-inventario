@@ -1,8 +1,8 @@
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/database.js';
-import Departamento from './Departamento.js';
+import DepartamentoModels from './departamentoModels.js';
 
-const Equipamento = sequelize.define('Equipamento', {
+const EquipamentoModels = sequelize.define('Equipamento', {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -25,7 +25,7 @@ const Equipamento = sequelize.define('Equipamento', {
 });
 
 // Associações
-Equipamento.belongsTo(Departamento, { foreignKey: 'departamentoId' });
-Departamento.hasMany(Equipamento, { foreignKey: 'departamentoId' });
+EquipamentoModels.belongsTo(DepartamentoModels, { foreignKey: 'departamentoId' });
+DepartamentoModels.hasMany(EquipamentoModels, { foreignKey: 'departamentoId' });
 
-export default Equipamento;
+export default EquipamentoModels;
