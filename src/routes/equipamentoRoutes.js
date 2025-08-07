@@ -8,9 +8,6 @@ import {
 } from "../controllers/equipamentoController.js";
 import authMiddleware from "../middlewares/authMiddleware.js";
 
-
-
-
 const router = new Router();
 
 router.get("/",listarEquipamentos)
