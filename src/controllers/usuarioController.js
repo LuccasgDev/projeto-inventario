@@ -1,4 +1,4 @@
-import usuarioModels from "../models/usuarioModels.js";
+import usuarioModels from "../models/Usuario.js";
 
 export async function criarUsuario(req, res) {
     try {

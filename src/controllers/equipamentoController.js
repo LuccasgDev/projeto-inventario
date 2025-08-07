@@ -1,4 +1,4 @@
- import equipamentoModels from "../models/equipamentoModels.js";
+ import equipamentoModels from "../models/Equipamento.js";
 
 export async function criarEquipamento(req, res) {
     try {

@@ -1,7 +1,7 @@
 import {DataTypes} from "sequelize";
 import {sequelize} from "../config/database.js";
 
-const DepartamentoModels = sequelize.define("Departamento", {
+const Departamento = sequelize.define("Departamento", {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -21,4 +21,4 @@ const DepartamentoModels = sequelize.define("Departamento", {
         timestamps: true
 })
 
-export default DepartamentoModels;
+export default Departamento;

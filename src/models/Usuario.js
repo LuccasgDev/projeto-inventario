@@ -2,7 +2,7 @@ import {DataTypes, Model} from "sequelize";
 import {sequelize} from "../config/database.js";
 import * as timers from "node:timers";
 
-const UsuarioModels = sequelize.define("Usuario", {
+const Usuario = sequelize.define("Usuario", {
     id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
@@ -30,4 +30,4 @@ const UsuarioModels = sequelize.define("Usuario", {
     timestamps: true
     });
 
-export default UsuarioModels;
+export default Usuario;

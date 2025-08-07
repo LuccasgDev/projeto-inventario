@@ -1,4 +1,4 @@
-import substituicaoModels from "../models/substituicaoModels.js";
+import substituicaoModels from "../models/Substituicao.js";
 
 export async function criarSubstituicao(req, res){
     try {
