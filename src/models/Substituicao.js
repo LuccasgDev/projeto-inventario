@@ -1,9 +1,7 @@
-import {DataTypes} from "sequelize";
-import {sequelize} from "../config/database.js";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 import Componente from "./Componente.js";
-import equipamento  from "./Equipamento.js";
 import Equipamento from "./Equipamento.js";
-import componente from "./Componente.js";
 
 const Substituicao = sequelize.define("Substituicao", {
     id: {
@@ -15,20 +13,20 @@ const Substituicao = sequelize.define("Substituicao", {
         type: DataTypes.DATE,
         allowNull: false,
     },
-    obsevacao: {
+    observacao: {
         type: DataTypes.TEXT,
         allowNull: false,
     }
-},{
-    tableName: "Substituicao",
+}, {
+    tableName: "substituicoes",
     timestamps: true,
-})
+});
 
-Substituicao.belongsTo(Equipamento, {foreignKey: "equipamentoId"})
-Equipamento.hasMany(Substituicao, {foreignKey: "equipamentoId"})
+// Associações
+Substituicao.belongsTo(Equipamento, { foreignKey: "equipamentoId" });
+Equipamento.hasMany(Substituicao, { foreignKey: "equipamentoId" });
 
-
-Substituicao.belongsTo(Componente, {as: "componenteAntigo", foreignKey: "componenteAntigoId"})
-Substituicao.belongsTo(Componente, {as:"componenteNovo", foreignKey: "componenteNovoId"})
+Substituicao.belongsTo(Componente, { as: "componenteAntigo", foreignKey: "componenteAntigoId" });
+Substituicao.belongsTo(Componente, { as: "componenteNovo", foreignKey: "componenteNovoId" });
 
 export default Substituicao;

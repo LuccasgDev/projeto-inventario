@@ -1,83 +1,101 @@
-import usuarioModels from "../models/Usuario.js";
+import Usuario from "../models/Usuario.js";
 
 export async function criarUsuario(req, res) {
     try {
-        const {nome, email, senhaHash, nivelAcesso} = req.body;
+        const { nome, email, senhaHash, nivelAcesso } = req.body;
 
-        if (!usuario || !senhaHash || !nivelAcesso) {
-            res.status(400).json({error : "nome, email ou nivelAcesso sao obrigadorios"});
+        if (!nome || !email || !senhaHash) {
+            return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
         }
 
-        const niveisValidos = ["user", "admin"]
-        if(nivelAcesso && !niveisValidos.includes(nivelAcesso)){
-            res.status(400).json({error : "nivel de acesso invalido"});
+        const niveisValidos = ["user", "admin"];
+        if (nivelAcesso && !niveisValidos.includes(nivelAcesso)) {
+            return res.status(400).json({ error: "Nível de acesso inválido" });
         }
-        const usuario = await usuarioModels.create({
-            nome, email, senhaHash, nivelAcesso: nivelAcesso || "user",});
 
-        res.status(200).json({usuario});
-    }catch (error) {
+        const usuario = await Usuario.create({
+            nome,
+            email,
+            senhaHash,
+            nivelAcesso: nivelAcesso || "user"
+        });
+
+        res.status(201).json(usuario);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao criar usuarios" });
+        res.status(500).json({ error: "Erro ao criar usuário" });
     }
 }
 
 export async function listarUsuario(req, res) {
     try {
-        const usuario = await usuarioModels.findAll()
-        res.status(200).json({usuario});
-    }catch (error) {
+        const usuarios = await Usuario.findAll();
+        res.status(200).json(usuarios);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao listar usuario" });
+        res.status(500).json({ error: "Erro ao listar usuários" });
     }
 }
 
-export async function detalharUsuario(req, res){
+export async function detalharUsuario(req, res) {
     try {
-        const {id} = req.params;
-        const usuario = usuarioModels.findByPk(id)
-        if(!usuario){
-            res.status(404).json({error: "Nada Detalhado"})
+        const { id } = req.params;
+        const usuario = await Usuario.findByPk(id);
+
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuário não encontrado" });
         }
-        res.json(usuario)
-    }catch (error) {
+
+        res.json(usuario);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao detalhar usuario" });
+        res.status(500).json({ error: "Erro ao detalhar usuário" });
     }
 }
 
 export async function atualizarUsuario(req, res) {
     try {
+        const { id } = req.params;
+        const { nome, email, senhaHash, nivelAcesso } = req.body;
+        const usuario = await Usuario.findByPk(id);
 
-        const {id} = req.params;
-        const {nome, email, senhaHash, nivelAcesso} = req.body;
-        const usuario = await usuarioModels.findByPk(id)
         if (!usuario) {
-            res.status(404).json({error: "Nada Encontrado"})
+            return res.status(404).json({ error: "Usuário não encontrado" });
         }
-        if (nome !== undefined) usuarioModels.nome = nome;
-        if (email !== undefined) usuarioModels.email = email;
-        if (senhaHash !== undefined) usuarioModels.senha = senhaHash;
-        if (nivelAcesso !== undefined) usuarioModels.nivelAcesso = nivelAcesso;
+
+        if (nome !== undefined) usuario.nome = nome;
+        if (email !== undefined) usuario.email = email;
+        if (senhaHash !== undefined) usuario.senhaHash = senhaHash;
+
+        if (nivelAcesso !== undefined) {
+            const niveisValidos = ["user", "admin"];
+            if (!niveisValidos.includes(nivelAcesso)) {
+                return res.status(400).json({ error: "Nível de acesso inválido" });
+            }
+            usuario.nivelAcesso = nivelAcesso;
+        }
+
         await usuario.save();
-    }catch (error) {
+        res.json(usuario);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao atualizar usuario" });
+        res.status(500).json({ error: "Erro ao atualizar usuário" });
     }
 }
 
 export async function deletarUsuario(req, res) {
-    try{
-        const {id} = req.params;
-        const usuario = await usuarioModels.findByPk(id)
-        if(!usuario){
-            res.status(404).json({error: "Nada Encontrado"})
+    try {
+        const { id } = req.params;
+        const usuario = await Usuario.findByPk(id);
+
+        if (!usuario) {
+            return res.status(404).json({ error: "Usuário não encontrado" });
         }
-        await usuario.destroy()
-        await usuario.remove()
-        res.status(200).send()
-    }catch (error) {
+
+        await usuario.destroy();
+        res.status(204).send();
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao deletar usuario" });
+        res.status(500).json({ error: "Erro ao deletar usuário" });
     }
 }

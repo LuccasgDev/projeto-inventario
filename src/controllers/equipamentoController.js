@@ -1,78 +1,83 @@
- import equipamentoModels from "../models/Equipamento.js";
+import Equipamento from "../models/Equipamento.js";
 
 export async function criarEquipamento(req, res) {
     try {
-        const {nome, tag, dataAquisicao} = req.body;
-        const equipamento = await equipamentoModels.create({
+        const { nome, tag, dataAquisicao, departamentoId } = req.body;
+        const equipamento = await Equipamento.create({
             nome,
             tag,
-            dataAquisicao: new Date(dataAquisicao)
-        })
-        res.status(200).json({ equipamento });
-    }catch (error) {
-        res.status(500).json({ error: "erro ao criar equipamento" });
+            dataAquisicao: new Date(dataAquisicao),
+            departamentoId
+        });
+        res.status(201).json(equipamento);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro ao criar equipamento" });
     }
 }
 
 export async function listarEquipamentos(req, res) {
-    try{
-        const equipamentos = await equipamentoModels.findAll();
+    try {
+        const equipamentos = await Equipamento.findAll();
         res.json(equipamentos);
-    }catch (error) {
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erro ao listar os equipamentos" });
+        res.status(500).json({ error: "Erro ao listar equipamentos" });
     }
 }
 
 export async function detalharEquipamento(req, res) {
-    try{
-        const {id} = req.params;
-        const equipamentos = await equipamentoModels.findByPk(id);
-        if(!equipamentos){
-           return res.status(404).json({error: "Equipamento nao encontrado"});
+    try {
+        const { id } = req.params;
+        const equipamento = await Equipamento.findByPk(id);
+
+        if (!equipamento) {
+            return res.status(404).json({ error: "Equipamento não encontrado" });
         }
-        res.json(equipamentos);
-    }catch (error) {
+
+        res.json(equipamento);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erro ao detalhar os equipamentos" });
+        res.status(500).json({ error: "Erro ao detalhar equipamento" });
     }
 }
 
 export async function atualizarEquipamento(req, res) {
-    try{
-        const {id} = req.params;
-        const {nome, tag, dataAquisicao} = req.body;
-        const equipamento = await equipamentoModels.findByPk(id);
+    try {
+        const { id } = req.params;
+        const { nome, tag, dataAquisicao, departamentoId } = req.body;
+        const equipamento = await Equipamento.findByPk(id);
 
-        if(!equipamento){
-            res.status(404).json({error: "Equipamento nao encontrado"});
+        if (!equipamento) {
+            return res.status(404).json({ error: "Equipamento não encontrado" });
         }
 
-        if(nome !== undefined) equipamento.nome = nome;
-        if(tag !== undefined) equipamento.tag = tag;
-        if(dataAquisicao !== undefined) equipamento.dataAquisicao = new Date(dataAquisicao)
+        if (nome !== undefined) equipamento.nome = nome;
+        if (tag !== undefined) equipamento.tag = tag;
+        if (dataAquisicao !== undefined) equipamento.dataAquisicao = new Date(dataAquisicao);
+        if (departamentoId !== undefined) equipamento.departamentoId = departamentoId;
 
         await equipamento.save();
-
-        res.status(200).json({message: 'Equipamento atualizado'});
-    }catch (error) {
+        res.json(equipamento);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Erro ao atualizar os equipamentos"});
+        res.status(500).json({ error: "Erro ao atualizar equipamento" });
     }
 }
 
-
 export async function deletarEquipamento(req, res) {
-    try{
-        const {id} = req.params;
-        const equipamento = await equipamentoModels.findByPk(id);
-        if(!equipamento){
-            res.status(404).json({error: "Equipamento nao encontrado"});
+    try {
+        const { id } = req.params;
+        const equipamento = await Equipamento.findByPk(id);
+
+        if (!equipamento) {
+            return res.status(404).json({ error: "Equipamento não encontrado" });
         }
+
         await equipamento.destroy();
-        res.status(200).send()
-    }catch (error){
+        res.status(204).send();
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Erro ao deletar equipamento"});
+        res.status(500).json({ error: "Erro ao deletar equipamento" });
     }
 }

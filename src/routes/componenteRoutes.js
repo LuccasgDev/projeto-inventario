@@ -1,4 +1,4 @@
-import { Router } from 'express';
+import express from 'express';
 import {
     criarComponente,
     listarComponente,
@@ -7,7 +7,7 @@ import {
     deletarComponente
 } from '../controllers/componenteController.js';
 
-const router = Router();
+const router = express.Router();
 
 // Rota POST: Criar um novo componente
 router.post('/', criarComponente);

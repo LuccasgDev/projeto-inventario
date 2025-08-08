@@ -1,5 +1,5 @@
-import {DataTypes} from "sequelize";
-import {sequelize} from "../config/database.js";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 
 const Departamento = sequelize.define("Departamento", {
     id: {
@@ -15,10 +15,9 @@ const Departamento = sequelize.define("Departamento", {
         type: DataTypes.STRING,
         allowNull: false,
     },
-},
-    {
-        tableName: "departamentos",
-        timestamps: true
-})
+}, {
+    tableName: "departamentos",
+    timestamps: true
+});
 
 export default Departamento;

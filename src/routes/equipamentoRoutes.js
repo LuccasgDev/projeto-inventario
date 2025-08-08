@@ -1,4 +1,4 @@
-import {Router} from "express";
+import express from "express";
 import {
     criarEquipamento,
     atualizarEquipamento,
@@ -6,15 +6,14 @@ import {
     detalharEquipamento,
     listarEquipamentos,
 } from "../controllers/equipamentoController.js";
-import authMiddleware from "../middlewares/authMiddleware.js";
 
-const router = new Router();
+
+const router = express.Router();
 
 router.get("/",listarEquipamentos)
 router.post("/", criarEquipamento)
 router.put("/:id", atualizarEquipamento)
 router.get("/:id",detalharEquipamento)
 router.delete("/:id",deletarEquipamento)
-router.post('/equipamentos', authMiddleware, adminMiddleware, criarEquipamento);
 
 export default router;

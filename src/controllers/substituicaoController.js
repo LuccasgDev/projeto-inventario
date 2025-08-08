@@ -1,72 +1,90 @@
-import substituicaoModels from "../models/Substituicao.js";
+import Substituicao from "../models/Substituicao.js";
 
-export async function criarSubstituicao(req, res){
+export async function criarSubstituicao(req, res) {
     try {
-        const {dataSubstituicao, obsevacao} = req.body;
-        const substituicao = await substituicaoModels.create({dataSubstituicao, obsevacao})
-        res.status(200).json({substituicao});
+        const {
+            equipamentoId,
+            componenteAntigoId,
+            componenteNovoId,
+            dataSubstituicao,
+            observacao
+        } = req.body;
+
+        const substituicao = await Substituicao.create({
+            equipamentoId,
+            componenteAntigoId,
+            componenteNovoId,
+            dataSubstituicao: new Date(dataSubstituicao),
+            observacao
+        });
+
+        res.status(201).json(substituicao);
     } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "erro ao criar substituicao" });
+        res.status(500).json({ error: "Erro ao criar substituição" });
     }
 }
 
-export async function listarSubstituicao(req, res){
+export async function listarSubstituicao(req, res) {
     try {
-        const substituicao = await substituicaoModels.findAll()
-        res.status(200).json({substituicao});
-    }catch (error) {
+        const substituicoes = await Substituicao.findAll();
+        res.status(200).json(substituicoes);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erro ao listar os equipamentos" });
+        res.status(500).json({ error: "Erro ao listar substituições" });
     }
 }
 
-export async function detalhesSubstituicao(req, res){
+export async function detalhesSubstituicao(req, res) {
     try {
-        const {id} = req.params;
-        const subestituicao = await substituicaoModels.findByPk(id);
-        if(!subestituicao){
-            res.status(404).json({error: "Nao encontrado"});
+        const { id } = req.params;
+        const substituicao = await Substituicao.findByPk(id);
+
+        if (!substituicao) {
+            return res.status(404).json({ error: "Substituição não encontrada" });
         }
-        res.json({subestituicao});
-    }catch (error) {
+
+        res.json(substituicao);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({ error: "Erro ao listar os substituicao" });
+        res.status(500).json({ error: "Erro ao detalhar substituição" });
     }
 }
 
-export async function atualizarSubstituicao(req, res){
+export async function atualizarSubstituicao(req, res) {
     try {
-        const {id} = req.params;
-        const{dataSubstituicao, obsevacao} = res.body
-        const substituicao = await substituicaoModels.findByPk(id);
-        if(!substituicao){
-            res.status(404).json({error: "Nao encontrado"});
+        const { id } = req.params;
+        const { dataSubstituicao, observacao } = req.body;
+        const substituicao = await Substituicao.findByPk(id);
+
+        if (!substituicao) {
+            return res.status(404).json({ error: "Substituição não encontrada" });
         }
-        if(dataSubstituicao !== undefined) substituicao.dataSubstituicao = dataSubstituicao;
-        if(obsevacao !== undefined) substituicao.obsevacao = obsevacao;
+
+        if (dataSubstituicao !== undefined) substituicao.dataSubstituicao = new Date(dataSubstituicao);
+        if (observacao !== undefined) substituicao.observacao = observacao;
 
         await substituicao.save();
-    }catch (error) {
+        res.json(substituicao);
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Erro ao atualizar os substituicao" });
+        res.status(500).json({ error: "Erro ao atualizar substituição" });
     }
 }
 
-export async function deletarSubstituicao(req, res){
+export async function deletarSubstituicao(req, res) {
     try {
-        const {id} = req.params;
-        const substituicao = await substituicaoModels.findByPk(id);
-        if(!substituicao){
-            res.status(404).json({error: "Nao encontrado"});
+        const { id } = req.params;
+        const substituicao = await Substituicao.findByPk(id);
+
+        if (!substituicao) {
+            return res.status(404).json({ error: "Substituição não encontrada" });
         }
-        await substituicao.destroy()
-        res.status(200).send();
-    }catch (error) {
+
+        await substituicao.destroy();
+        res.status(204).send();
+    } catch (error) {
         console.error(error);
-        res.status(500).json({error: "Erro ao deletar os substituicao" });
+        res.status(500).json({ error: "Erro ao deletar substituição" });
     }
 }
-
-
-

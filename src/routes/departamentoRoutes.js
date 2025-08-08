@@ -1,4 +1,5 @@
-import {Router} from "express"
+// src/routes/departamentoRoutes.js
+import express from "express";
 import {
     listarDepartamentos,
     atualizarDepartamento,
@@ -6,14 +7,19 @@ import {
     deletarDepartamento,
     detalharDepartamento
 } from "../controllers/departamentoController.js";
+import { criarEquipamento } from "../controllers/equipamentoController.js"; // <-- IMPORTA AQUI
 import authMiddleware from "../middlewares/authMiddleware.js";
 
-const router = Router();
+const router = express.Router();
+
 router.get("/", listarDepartamentos);
-router.post("/", criarDepartamento)
-router.put("/:id", atualizarDepartamento)
-router.get("/:id",detalharDepartamento)
-router.delete("/:id",deletarDepartamento)
-router.post('/equipamentos', authMiddleware, adminMiddleware, criarEquipamento);
+router.post("/", criarDepartamento);
+
+// Rota para criar equipamento dentro de um departamento (usa :id do departamento)
+router.post("/:id/equipamentos", authMiddleware, criarEquipamento);
+
+router.put("/:id", atualizarDepartamento);
+router.get("/:id", detalharDepartamento);
+router.delete("/:id", deletarDepartamento);
 
 export default router;

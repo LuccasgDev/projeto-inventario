@@ -1,6 +1,5 @@
-import {DataTypes, Model} from "sequelize";
-import {sequelize} from "../config/database.js";
-import * as timers from "node:timers";
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 
 const Usuario = sequelize.define("Usuario", {
     id: {
@@ -28,6 +27,6 @@ const Usuario = sequelize.define("Usuario", {
 }, {
     tableName: "usuarios",
     timestamps: true
-    });
+});
 
 export default Usuario;

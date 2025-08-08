@@ -1,33 +1,31 @@
-import {DataTypes} from "sequelize";
-import sequelize from "../config/database.js"
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.js";
 
 const Componente = sequelize.define("Componente", {
-    id:{
+    id: {
         type: DataTypes.UUID,
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
     },
-    tipo:{
+    tipo: {
         type: DataTypes.STRING,
         allowNull: false,
     },
-    marca:{
+    marca: {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    modelo:{
+    modelo: {
         type: DataTypes.STRING,
         allowNull: true,
     },
-    observacao:{
+    observacao: {
         type: DataTypes.TEXT,
         allowNull: true,
     },
-    },
-{
-
-    tableName: "Componente",
-        timestamps: true
-})
+}, {
+    tableName: "componentes",
+    timestamps: true
+});
 
 export default Componente;
