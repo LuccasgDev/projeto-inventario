@@ -1,4 +1,5 @@
 import Usuario from "../models/Usuario.js";
+import {resolveIdentifier} from "../utils/identifierHelper.js";
 
 export async function criarUsuario(req, res) {
     try {
@@ -40,7 +41,7 @@ export async function listarUsuario(req, res) {
 export async function detalharUsuario(req, res) {
     try {
         const { id } = req.params;
-        const usuario = await Usuario.findByPk(id);
+        const usuario = await resolveIdentifier(Usuario, id)
 
         if (!usuario) {
             return res.status(404).json({ error: "Usuário não encontrado" });
@@ -57,7 +58,7 @@ export async function atualizarUsuario(req, res) {
     try {
         const { id } = req.params;
         const { nome, email, senhaHash, nivelAcesso } = req.body;
-        const usuario = await Usuario.findByPk(id);
+        const usuario = await resolveIdentifier(Usuario, id)
 
         if (!usuario) {
             return res.status(404).json({ error: "Usuário não encontrado" });
@@ -86,7 +87,7 @@ export async function atualizarUsuario(req, res) {
 export async function deletarUsuario(req, res) {
     try {
         const { id } = req.params;
-        const usuario = await Usuario.findByPk(id);
+        const usuario = await resolveIdentifier(Usuario, id)
 
         if (!usuario) {
             return res.status(404).json({ error: "Usuário não encontrado" });

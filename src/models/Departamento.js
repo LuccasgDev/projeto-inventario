@@ -10,6 +10,7 @@ const Departamento = sequelize.define("Departamento", {
     nome: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true,
     },
     descricao: {
         type: DataTypes.STRING,
@@ -17,7 +18,11 @@ const Departamento = sequelize.define("Departamento", {
     },
 }, {
     tableName: "departamentos",
-    timestamps: true
+    timestamps: true,
+    indexes: [
+        { unique: true, fields: ["nome"] },
+        { fields: ["createdAt"] },
+    ],
 });
 
 export default Departamento;

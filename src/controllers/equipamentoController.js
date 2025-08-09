@@ -1,4 +1,5 @@
 import Equipamento from "../models/Equipamento.js";
+import {resolveIdentifier} from "../utils/identifierHelper.js";
 
 export async function criarEquipamento(req, res) {
     try {
@@ -29,7 +30,7 @@ export async function listarEquipamentos(req, res) {
 export async function detalharEquipamento(req, res) {
     try {
         const { id } = req.params;
-        const equipamento = await Equipamento.findByPk(id);
+        const equipamento = await resolveIdentifier(Equipamento, id);
 
         if (!equipamento) {
             return res.status(404).json({ error: "Equipamento não encontrado" });
@@ -46,7 +47,7 @@ export async function atualizarEquipamento(req, res) {
     try {
         const { id } = req.params;
         const { nome, tag, dataAquisicao, departamentoId } = req.body;
-        const equipamento = await Equipamento.findByPk(id);
+        const equipamento = await resolveIdentifier(Equipamento, id);
 
         if (!equipamento) {
             return res.status(404).json({ error: "Equipamento não encontrado" });
@@ -68,7 +69,7 @@ export async function atualizarEquipamento(req, res) {
 export async function deletarEquipamento(req, res) {
     try {
         const { id } = req.params;
-        const equipamento = await Equipamento.findByPk(id);
+        const equipamento = await resolveIdentifier(Equipamento, id);
 
         if (!equipamento) {
             return res.status(404).json({ error: "Equipamento não encontrado" });

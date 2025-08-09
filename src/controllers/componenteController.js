@@ -1,4 +1,5 @@
 import Componente from "../models/Componente.js";
+import {resolveIdentifier} from "../utils/identifierHelper.js";
 
 export async function criarComponente(req, res) {
     try {
@@ -29,7 +30,7 @@ export async function listarComponente(req, res) {
 export async function detalharComponente(req, res) {
     try {
         const { id } = req.params;
-        const componente = await Componente.findByPk(id);
+        const componente = await resolveIdentifier(Componente, id);
 
         if (!componente) {
             return res.status(404).json({ error: "Componente não encontrado" });
@@ -46,7 +47,7 @@ export async function atualizarComponente(req, res) {
     try {
         const { id } = req.params;
         const { tipo, marca, modelo, observacao } = req.body;
-        const componente = await Componente.findByPk(id);
+        const componente = await resolveIdentifier(Componente, id);
 
         if (!componente) {
             return res.status(404).json({ error: "Componente não encontrado" });
@@ -68,7 +69,7 @@ export async function atualizarComponente(req, res) {
 export async function deletarComponente(req, res) {
     try {
         const { id } = req.params;
-        const componente = await Componente.findByPk(id);
+        const componente = await resolveIdentifier(Componente, id);
 
         if (!componente) {
             return res.status(404).json({ error: "Componente não encontrado" });

@@ -1,4 +1,5 @@
 import Departamento from '../models/Departamento.js';
+import {resolveIdentifier} from "../utils/identifierHelper.js";
 
 export async function listarDepartamentos(req, res) {
     try {
@@ -24,7 +25,7 @@ export async function criarDepartamento(req, res) {
 export async function detalharDepartamento(req, res) {
     try {
         const { id } = req.params;
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await resolveIdentifier(Departamento, id)
 
         if (!departamento) {
             return res.status(404).json({ error: 'Departamento não encontrado' });
@@ -42,7 +43,7 @@ export async function atualizarDepartamento(req, res) {
         const { id } = req.params;
         const { nome, descricao } = req.body;
 
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await resolveIdentifier(Departamento, id)
         if (!departamento) {
             return res.status(404).json({ error: 'Departamento não encontrado' });
         }
@@ -61,7 +62,7 @@ export async function atualizarDepartamento(req, res) {
 export async function deletarDepartamento(req, res) {
     try {
         const { id } = req.params;
-        const departamento = await Departamento.findByPk(id);
+        const departamento = await resolveIdentifier(Departamento, id)
 
         if (!departamento) {
             return res.status(404).json({ error: 'Departamento não encontrado' });

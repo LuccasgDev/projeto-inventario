@@ -10,6 +10,7 @@ const Usuario = sequelize.define("Usuario", {
     nome: {
         type: DataTypes.STRING,
         allowNull: false,
+        unique: true
     },
     email: {
         type: DataTypes.STRING,
@@ -26,7 +27,11 @@ const Usuario = sequelize.define("Usuario", {
     },
 }, {
     tableName: "usuarios",
-    timestamps: true
+    timestamps: true,
+    indexes: [
+        { unique: true, fields: ["email"] },
+        { unique: true, fields: ["nome"] },
+    ]
 });
 
 export default Usuario;

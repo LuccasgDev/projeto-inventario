@@ -1,4 +1,5 @@
 import Substituicao from "../models/Substituicao.js";
+import {resolveIdentifier} from "../utils/identifierHelper.js";
 
 export async function criarSubstituicao(req, res) {
     try {
@@ -38,7 +39,7 @@ export async function listarSubstituicao(req, res) {
 export async function detalhesSubstituicao(req, res) {
     try {
         const { id } = req.params;
-        const substituicao = await Substituicao.findByPk(id);
+        const substituicao = await resolveIdentifier(Substituicao, id)
 
         if (!substituicao) {
             return res.status(404).json({ error: "Substituição não encontrada" });
@@ -55,7 +56,7 @@ export async function atualizarSubstituicao(req, res) {
     try {
         const { id } = req.params;
         const { dataSubstituicao, observacao } = req.body;
-        const substituicao = await Substituicao.findByPk(id);
+        const substituicao = await resolveIdentifier(Substituicao, id)
 
         if (!substituicao) {
             return res.status(404).json({ error: "Substituição não encontrada" });
@@ -75,7 +76,7 @@ export async function atualizarSubstituicao(req, res) {
 export async function deletarSubstituicao(req, res) {
     try {
         const { id } = req.params;
-        const substituicao = await Substituicao.findByPk(id);
+        const substituicao = await resolveIdentifier(Substituicao, id)
 
         if (!substituicao) {
             return res.status(404).json({ error: "Substituição não encontrada" });
